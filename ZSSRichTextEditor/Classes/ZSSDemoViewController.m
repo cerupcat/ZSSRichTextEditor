@@ -24,9 +24,6 @@
     UIView *holder = [[UIView alloc] initWithFrame:CGRectMake(0, 50, [UIScreen mainScreen].bounds.size.width, 200)];
     [self.view addSubview:holder];
     
-    
-    
-    
     self.title = @"Standard";
     
     // Export HTML
@@ -36,46 +33,21 @@
     // HTML Content to set in the editor
     NSString *html = @"<!-- This is an HTML comment -->"
     "<p>This is a test of the <strong>ZSSRichTextEditor</strong> by <a title=\"Zed Said\" href=\"http://www.zedsaid.com\">Zed Said Studio</a></p>";
-
     
     self.richText = [[ZSSRichTextEditor alloc] initWithView:holder];
     self.richText.baseURL = [NSURL URLWithString:@"http://www.zedsaid.com"];
+    self.richText.enabledToolbarItems = @[ZSSRichTextEditorToolbarBold, ZSSRichTextEditorToolbarItalic, ZSSRichTextEditorToolbarUnorderedList, ZSSRichTextEditorToolbarOrderedList, ZSSRichTextEditorToolbarQuickLink];
     [self.richText setHTML:html];
+    
+    self.richText.toolbarItemSelectedTintColor = [UIColor blueColor];
+    self.richText.toolbarItemTintColor = [UIColor blackColor];
     
     self.view.backgroundColor = [UIColor blueColor];
 }
 
-
-- (void)showInsertURLAlternatePicker {
-    
-//    [self dismissAlertView];
-    
-    ZSSDemoPickerViewController *picker = [[ZSSDemoPickerViewController alloc] init];
-    picker.demoView = self.richText;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:picker];
-    nav.navigationBar.translucent = NO;
-    [self presentViewController:nav animated:YES completion:nil];
-}
-
-
-- (void)showInsertImageAlternatePicker {
-    
-//    [self dismissAlertView];
-    
-    ZSSDemoPickerViewController *picker = [[ZSSDemoPickerViewController alloc] init];
-    picker.demoView = self.richText;
-    picker.isInsertImagePicker = YES;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:picker];
-    nav.navigationBar.translucent = NO;
-    [self presentViewController:nav animated:YES completion:nil];
-    
-}
-
-
 - (void)exportHTML {
     NSLog(@"%@", [self.richText getHTML]);
 }
-
 
 - (void)didReceiveMemoryWarning
 {

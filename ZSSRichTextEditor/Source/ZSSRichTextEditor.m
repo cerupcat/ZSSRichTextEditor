@@ -10,8 +10,6 @@
 #import <UIKit/UIKit.h>
 #import "ZSSRichTextEditor.h"
 #import "ZSSBarButtonItem.h"
-#import "HRColorUtil.h"
-#import "ZSSTextView.h"
 
 
 @interface UIWebView (HackishAccessoryHiding)
@@ -106,10 +104,6 @@ static Class hackishFixClass = Nil;
 @end
 
 @implementation ZSSRichTextEditor
-
-/*- (void)viewDidLoad {
-    [super viewDidLoad];
- */
 
 - (instancetype)initWithView:(UIView *)view
 {
@@ -210,6 +204,10 @@ static Class hackishFixClass = Nil;
     return self;
 }
 
+- (void)dealloc
+{
+    [self stopMonitoring];
+}
 
 - (void)setEnabledToolbarItems:(NSArray *)enabledToolbarItems {
     
@@ -235,7 +233,6 @@ static Class hackishFixClass = Nil;
 - (void)setToolbarItemSelectedTintColor:(UIColor *)toolbarItemSelectedTintColor {
     
     _toolbarItemSelectedTintColor = toolbarItemSelectedTintColor;
-    
 }
 
 
@@ -416,13 +413,6 @@ static Class hackishFixClass = Nil;
         [items addObject:textColor];
     }
     
-    // Background Color
-    if ((_enabledToolbarItems && [_enabledToolbarItems containsObject:ZSSRichTextEditorToolbarBackgroundColor]) || (_enabledToolbarItems && [_enabledToolbarItems containsObject:ZSSRichTextEditorToolbarAll])) {
-        ZSSBarButtonItem *bgColor = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSbgcolor.png"] style:UIBarButtonItemStylePlain target:self action:@selector(bgColor)];
-        bgColor.label = @"backgroundColor";
-        [items addObject:bgColor];
-    }
-    
     // Unordered List
     if ((_enabledToolbarItems && [_enabledToolbarItems containsObject:ZSSRichTextEditorToolbarUnorderedList]) || (_enabledToolbarItems && [_enabledToolbarItems containsObject:ZSSRichTextEditorToolbarAll])) {
         ZSSBarButtonItem *ul = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSunorderedlist.png"] style:UIBarButtonItemStylePlain target:self action:@selector(setUnorderedList)];
@@ -494,7 +484,6 @@ static Class hackishFixClass = Nil;
     }
     
     return [NSArray arrayWithArray:items];
-    
 }
 
 
@@ -532,21 +521,6 @@ static Class hackishFixClass = Nil;
     self.toolBarScroll.contentSize = CGSizeMake(self.toolbar.frame.size.width, 44);
 }
 
-
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillHideNotification object:nil];
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated {
-//    [super viewWillDisappear:animated];
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-//}
-
 - (void)startMonitoring
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillShowNotification object:nil];
@@ -558,19 +532,6 @@ static Class hackishFixClass = Nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
-
-- (void)dealloc
-{
-    [self stopMonitoring];
-}
-
-
-//
-//- (void)didReceiveMemoryWarning
-//{
-//    [super didReceiveMemoryWarning];
-//    // Dispose of any resources that can be recreated.
-//}
 
 #pragma mark - Editor Interaction
 
@@ -758,46 +719,6 @@ static Class hackishFixClass = Nil;
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
-- (void)textColor {
-    
-//    // Save the selection location
-//    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
-//    
-//    // Call the picker
-//    HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
-//    colorPicker.delegate = self;
-//    colorPicker.tag = 1;
-//    colorPicker.title = NSLocalizedString(@"Text Color", nil);
-//    [self.navigationController pushViewController:colorPicker animated:YES];
-    
-}
-
-- (void)bgColor {
-    
-//    // Save the selection location
-//    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
-//    
-//    // Call the picker
-//    HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
-//    colorPicker.delegate = self;
-//    colorPicker.tag = 2;
-//    colorPicker.title = NSLocalizedString(@"BG Color", nil);
-//    [self.navigationController pushViewController:colorPicker animated:YES];
-}
-
-- (void)setSelectedColor:(UIColor*)color tag:(int)tag {
-    
-    NSString *hex = [NSString stringWithFormat:@"#%06x",HexColorFromUIColor(color)];
-    NSString *trigger;
-    if (tag == 1) {
-        trigger = [NSString stringWithFormat:@"zss_editor.setTextColor(\"%@\");", hex];
-    } else if (tag == 2) {
-        trigger = [NSString stringWithFormat:@"zss_editor.setBackgroundColor(\"%@\");", hex];
-    }
-    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    
-}
-
 - (void)undo:(ZSSBarButtonItem *)barButtonItem {
     [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.undo();"];
 }
@@ -813,7 +734,6 @@ static Class hackishFixClass = Nil;
     
     // Show the dialog for inserting or editing a link
     [self showInsertLinkDialogWithLink:self.selectedLinkURL title:self.selectedLinkTitle];
-    
 }
 
 
@@ -1265,51 +1185,15 @@ static Class hackishFixClass = Nil;
             // Provide editor with keyboard height and editor view height
             [self setFooterHeight:(self.view.frame.size.height - keyboardTopYInView - 8)];
             [self setContentHeight: self.editorViewFrame.size.height];
-            
-            
-         
-//            // Editor View
-//            const int extraHeight = 10;
-//            
-//            CGRect editorFrame = self.editorView.frame;
-//            editorFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
-//            self.editorView.frame = editorFrame;
-//            self.editorViewFrame = self.editorView.frame;
-//            self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-//            self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-//            
-//            // Source View
-//            CGRect sourceFrame = self.sourceView.frame;
-//            sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
-//            self.sourceView.frame = sourceFrame;
 
-            
         } completion:nil];
         
     } else {
         
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
-            
             CGRect frame = self.toolbarHolder.frame;
             frame.origin.y = CGRectGetHeight([UIScreen mainScreen].bounds);
             self.toolbarHolder.frame = frame;
-            
-            /*
-            // Editor View
-            CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = self.view.frame.size.height;
-            self.editorView.frame = editorFrame;
-            self.editorViewFrame = self.editorView.frame;
-            
-            self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-            self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-            
-            // Source View
-            CGRect sourceFrame = self.sourceView.frame;
-            sourceFrame.size.height = self.view.frame.size.height;
-            self.sourceView.frame = sourceFrame;
-             */
-            
         } completion:nil];
         
     }//end
