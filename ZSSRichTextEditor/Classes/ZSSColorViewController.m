@@ -10,6 +10,8 @@
 
 @interface ZSSColorViewController ()
 
+@property (nonatomic, strong) ZSSRichTextEditor *richText;
+
 @end
 
 @implementation ZSSColorViewController
@@ -24,17 +26,19 @@
     // HTML Content to set in the editor
     NSString *html = @"<p>This editor is using <strong>custom toolbar colors</strong>.</p>";
     
+    self.richText = [[ZSSRichTextEditor alloc] initWithView:self.view];
+    
     // Set the base URL if you would like to use relative links, such as to images.
-    self.baseURL = [NSURL URLWithString:@"http://www.zedsaid.com"];
+    self.richText.baseURL = [NSURL URLWithString:@"http://www.zedsaid.com"];
     
     // Set the toolbar item color
-    self.toolbarItemTintColor = [UIColor redColor];
+    self.richText.toolbarItemTintColor = [UIColor redColor];
     
     // Set the toolbar selected color
-    self.toolbarItemSelectedTintColor = [UIColor blackColor];
+    self.richText.toolbarItemSelectedTintColor = [UIColor blackColor];
     
     // Set the HTML contents of the editor
-    [self setHTML:html];
+    [self.richText setHTML:html];
     
 }
 

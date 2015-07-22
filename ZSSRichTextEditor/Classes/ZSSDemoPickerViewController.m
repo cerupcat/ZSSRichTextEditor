@@ -53,7 +53,7 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    ZSSDemoViewController *vc = self.demoView;
+    ZSSRichTextEditor *vc = self.demoView;
     if (!self.isInsertImagePicker) {
         [vc showInsertLinkDialogWithLink:self.textField.text title:nil];
     } else {

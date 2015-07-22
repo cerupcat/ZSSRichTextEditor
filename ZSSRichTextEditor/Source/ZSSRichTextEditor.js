@@ -37,38 +37,46 @@ zss_editor.updateScrollOffset = false;
  * The initializer function that must be called onLoad
  */
 zss_editor.init = function() {
+    /*
+     $('#zss_editor_content').on('touchend', function(e) {
+     zss_editor.enabledEditingItems(e);
+     var clicked = $(e.target);
+     if (!clicked.hasClass('zs_active')) {
+     $('img').removeClass('zs_active');
+     }
+     });*/
+    /*
+     $(document).on('selectionchange',function(e){
+     zss_editor.calculateEditorHeightWithCaretPosition();
+     zss_editor.setScrollPosition();
+     });*/
     
-    $('#zss_editor_content').on('touchend', function(e) {
-                                zss_editor.enabledEditingItems(e);
-                                var clicked = $(e.target);
-                                if (!clicked.hasClass('zs_active')) {
-                                $('img').removeClass('zs_active');
-                                }
-                                });
-    
-    $(document).on('selectionchange',function(e){
-                   zss_editor.calculateEditorHeightWithCaretPosition();
-                   zss_editor.setScrollPosition();
-                   });
-    
-    $(window).on('scroll', function(e) {
-                 zss_editor.updateOffset();
-                 });
+    $(document).keyup(function() {
+                      zss_editor.calculateEditorHeightWithCaretPosition();
+                      zss_editor.setScrollPosition();
+                      });
+    /*
+     $(window).on('scroll', function(e) {
+     zss_editor.updateOffset();
+     });*/
     
     // Make sure that when we tap anywhere in the document we focus on the editor
-    $(window).on('touchmove', function(e) {
-                 zss_editor.isDragging = true;
-                 zss_editor.updateScrollOffset = true;
-                 zss_editor.setScrollPosition();
-                 });
-    $(window).on('touchstart', function(e) {
-                 zss_editor.isDragging = false;
-                 });
-    $(window).on('touchend', function(e) {
-                 if (!zss_editor.isDragging) {
-                 zss_editor.focusEditor();
-                 }
-                 });
+    /*
+     $(window).on('touchmove', function(e) {
+     zss_editor.isDragging = true;
+     zss_editor.updateScrollOffset = true;
+     zss_editor.setScrollPosition();
+     });*/
+    /*
+     $(window).on('touchstart', function(e) {
+     zss_editor.isDragging = false;
+     });*/
+    /*
+     $(window).on('touchend', function(e) {
+     if (!zss_editor.isDragging) {
+     zss_editor.focusEditor();
+     }
+     });*/
     
 }//end
 
@@ -99,12 +107,10 @@ zss_editor.debug = function(msg) {
     window.location = 'debug://'+msg;
 }
 
-
 zss_editor.setScrollPosition = function() {
     var position = window.pageYOffset;
     window.location = 'scroll://'+position;
 }
-
 
 zss_editor.setPlaceholder = function(placeholder) {
     
@@ -141,7 +147,6 @@ zss_editor.getCaretYPosition = function() {
     //sel.collapseToStart();
     var range = sel.getRangeAt(0);
     var span = document.createElement('span');// something happening here preventing selection of elements
-    range.collapse(false);
     range.insertNode(span);
     var topPosition = span.offsetTop;
     span.parentNode.removeChild(span);
@@ -618,20 +623,28 @@ zss_editor.enabledEditingItems = function(e) {
     
 }
 
-zss_editor.focusEditor = function() {
+zss_editor.focusWysiwyg = function() {
     
-    // the following was taken from http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity/3866442#3866442
-    // and ensures we move the cursor to the end of the editor
     var editor = $('#zss_editor_content');
-    var range = document.createRange();
-    range.selectNodeContents(editor.get(0));
-    range.collapse(false);
-    var selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
     editor.focus();
 }
 
-zss_editor.blurEditor = function() {
-    $('#zss_editor_content').blur();
-}//end
+/*
+ zss_editor.focusEditor = function() {
+ 
+ // the following was taken from http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity/3866442#3866442
+ // and ensures we move the cursor to the end of the editor
+ var editor = $('#zss_editor_content');
+ var range = document.createRange();
+ range.selectNodeContents(editor.get(0));
+ range.collapse(false);
+ var selection = window.getSelection();
+ selection.removeAllRanges();
+ selection.addRange(range);
+ editor.focus();
+ }
+ */
+/*
+ zss_editor.blurEditor = function() {
+ $('#zss_editor_content').blur();
+ }*/

@@ -10,6 +10,8 @@
 
 @interface ZSSSelectiveViewController ()
 
+@property (nonatomic, strong) ZSSRichTextEditor *richText;
+
 @end
 
 @implementation ZSSSelectiveViewController
@@ -23,13 +25,17 @@
     
     // HTML Content to set in the editor
     NSString *html = @"<p>Example showing just a few toolbar buttons.</p>";
+//    
+//    // Choose which toolbar items to show
+//    self.enabledToolbarItems = @[ZSSRichTextEditorToolbarBold, ZSSRichTextEditorToolbarH1, ZSSRichTextEditorToolbarParagraph];
+//    
+//    // Set the HTML contents of the editor
+//    [self setHTML:html];
+//    
     
-    // Choose which toolbar items to show
-    self.enabledToolbarItems = @[ZSSRichTextEditorToolbarBold, ZSSRichTextEditorToolbarH1, ZSSRichTextEditorToolbarParagraph];
-    
-    // Set the HTML contents of the editor
-    [self setHTML:html];
-    
+    self.richText = [[ZSSRichTextEditor alloc] initWithView:self.view];
+    self.richText.enabledToolbarItems = @[ZSSRichTextEditorToolbarBold, ZSSRichTextEditorToolbarH1, ZSSRichTextEditorToolbarParagraph];
+    [self.richText setHTML:html];
     
 }
 

@@ -11,7 +11,7 @@
 
 @interface ZSSDemoPickerViewController : UIViewController
 
-@property (nonatomic, strong) ZSSDemoViewController *demoView;
+@property (nonatomic, strong) ZSSRichTextEditor *demoView;
 @property (nonatomic) BOOL isInsertImagePicker;
 
 @end

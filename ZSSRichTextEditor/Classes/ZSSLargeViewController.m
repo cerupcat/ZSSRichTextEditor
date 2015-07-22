@@ -10,6 +10,8 @@
 
 @interface ZSSLargeViewController ()
 
+@property (nonatomic, strong) ZSSRichTextEditor *richText;
+
 @end
 
 @implementation ZSSLargeViewController
@@ -29,8 +31,10 @@
     "<p>Aliquam mattis libero arcu, <strong>a ultrices risus mattis sed</strong>. Vivamus facilisis consectetur ipsum at volutpat. Duis eget lorem sodales, congue libero dapibus, dignissim odio. Vivamus hendrerit ante at metus feugiat fringilla. Quisque imperdiet magna in tristique sagittis. Nulla neque turpis, tempus a leo eget, auctor interdum dui. In porta mi non libero lacinia pulvinar. Nunc a augue eget est malesuada eleifend a et orci. Aenean in tempus purus. Curabitur auctor viverra massa. Proin in justo pretium lacus pretium ullamcorper. Morbi elementum leo nibh, quis sodales nibh scelerisque ut.</p>"
     "<p>Mauris sed consequat augue. <strong>Aliquam accumsan erat lacus</strong>, consequat volutpat augue imperdiet vitae. Sed tempus dui quis faucibus tempor. Aliquam ultricies in turpis et vehicula. Suspendisse potenti. Duis iaculis rhoncus enim sed tempus. Cras non metus sed erat accumsan gravida vitae in lacus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer vel cursus ligula, a auctor lacus. In rhoncus massa <em>varius sagittis ultrices</em>. Donec aliquam, nisl sit amet hendrerit pretium, lorem quam mollis purus, ac interdum elit mi et neque. Etiam porta rutrum lacinia. Nullam nec vestibulum ligula. Nam nec ipsum odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>";
     
+    self.richText = [[ZSSRichTextEditor alloc] initWithView:self.view];
+    
     // Set the HTML contents of the editor
-    [self setHTML:html];
+    [self.richText setHTML:html];
     
 }
 

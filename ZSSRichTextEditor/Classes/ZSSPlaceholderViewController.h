@@ -8,6 +8,6 @@
 
 #import "ZSSRichTextEditor.h"
 
-@interface ZSSPlaceholderViewController : ZSSRichTextEditor
+@interface ZSSPlaceholderViewController : UIViewController
 
 @end

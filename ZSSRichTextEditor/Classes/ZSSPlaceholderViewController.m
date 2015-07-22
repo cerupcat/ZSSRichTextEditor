@@ -10,6 +10,8 @@
 
 @interface ZSSPlaceholderViewController ()
 
+@property (nonatomic, strong) ZSSRichTextEditor *richText;
+
 @end
 
 @implementation ZSSPlaceholderViewController
@@ -21,8 +23,8 @@
     
     self.title = @"Placeholder";
     
-    self.placeholder = @"Please tap to start editing";
-    
+    self.richText = [[ZSSRichTextEditor alloc] initWithView:self.view];
+    self.richText.placeholder = @"Please tap to start editing";
 }
 
 - (void)didReceiveMemoryWarning
